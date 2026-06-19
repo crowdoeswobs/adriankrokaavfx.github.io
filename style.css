@@ -1,0 +1,393 @@
+/* =========================================================
+   TOKENS
+========================================================= */
+:root{
+  --bg:        #0a0908;
+  --panel:     #14120f;
+  --ink:       #e8e3d8;
+  --ink-dim:   #948c7e;
+  --accent:    #c9a86a;
+  --accent-dim:#7a6a45;
+  --line:      #3d3a35;
+
+  --display: 'Bebas Neue', Impact, sans-serif;
+  --body:     'Inter', -apple-system, sans-serif;
+  --mono:     'JetBrains Mono', 'SF Mono', monospace;
+
+  --pad: clamp(24px, 6vw, 96px);
+}
+
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+
+body{
+  margin:0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior: auto; }
+  *{ animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+:focus-visible{
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   ATMOSPHERE — grain + vignette
+========================================================= */
+.grain{
+  position: fixed; inset:0; z-index: 50;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyMDAnIGhlaWdodD0nMjAwJz48ZmlsdGVyIGlkPSdub2lzZSc+PGZlVHVyYnVsZW5jZSB0eXBlPSdmcmFjdGFsTm9pc2UnIGJhc2VGcmVxdWVuY3k9JzAuOScgbnVtT2N0YXZlcz0nMicgc3RpdGNoVGlsZXM9J3N0aXRjaCcvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbHRlcj0ndXJsKCNub2lzZSknLz48L3N2Zz4=");
+  background-size: 200px 200px;
+}
+
+.vignette{
+  position: fixed; inset:0; z-index: 49;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 40%, transparent 40%, rgba(0,0,0,0.55) 100%);
+}
+
+/* progress rail */
+.rail{
+  position: fixed;
+  right: 18px; top: 50%;
+  transform: translateY(-50%);
+  width: 1px; height: 140px;
+  background: var(--line);
+  z-index: 60;
+}
+.rail-fill{
+  position: absolute; top:0; left:0; width:100%; height:0%;
+  background: var(--accent);
+  transition: height 0.1s linear;
+}
+@media (max-width: 720px){ .rail{ display:none; } }
+
+/* =========================================================
+   PASS — shared section shell
+========================================================= */
+.pass{
+  position: relative;
+  min-height: 100vh;
+  padding: var(--pad);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.pass-label{
+  position: absolute;
+  top: var(--pad);
+  left: var(--pad);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--mono);
+  letter-spacing: 0.08em;
+  z-index: 2;
+}
+.pass-label-num{
+  font-size: 13px;
+  color: var(--accent-dim);
+}
+.pass-label-text{
+  font-size: 11px;
+  color: var(--ink-dim);
+  text-transform: uppercase;
+}
+
+.section-title{
+  font-family: var(--display);
+  font-size: clamp(34px, 5vw, 56px);
+  letter-spacing: 0.02em;
+  font-weight: 400;
+  margin: 0 0 28px 0;
+  color: var(--ink);
+}
+
+/* reveal-on-scroll */
+.reveal{
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.9s cubic-bezier(.16,1,.3,1), transform 0.9s cubic-bezier(.16,1,.3,1);
+}
+.reveal.is-visible{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* =========================================================
+   HERO — PASS 01
+========================================================= */
+.pass--hero{
+  align-items: center;
+  text-align: center;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 30%, rgba(201,168,106,0.07), transparent 60%),
+    linear-gradient(180deg, #0d0c0a 0%, var(--bg) 100%);
+  overflow: hidden;
+}
+
+.hud{
+  position: absolute; inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.hud-tag{
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--ink-dim);
+  opacity: 0.55;
+}
+.hud-tl{ top: var(--pad); left: var(--pad); }
+.hud-tr{ top: var(--pad); right: var(--pad); }
+.hud-bl{ bottom: var(--pad); left: var(--pad); }
+.hud-br{ bottom: var(--pad); right: var(--pad); }
+
+.crosshair{
+  position: absolute;
+  width: 18px; height: 18px;
+  border: 1px solid var(--line);
+  opacity: 0.6;
+}
+.ch-tl{ top: calc(var(--pad) - 4px); left: calc(var(--pad) - 4px); border-right:none; border-bottom:none; }
+.ch-tr{ top: calc(var(--pad) - 4px); right: calc(var(--pad) - 4px); border-left:none; border-bottom:none; }
+.ch-bl{ bottom: calc(var(--pad) - 4px); left: calc(var(--pad) - 4px); border-right:none; border-top:none; }
+.ch-br{ bottom: calc(var(--pad) - 4px); right: calc(var(--pad) - 4px); border-left:none; border-top:none; }
+
+.hero-inner{
+  position: relative;
+  z-index: 2;
+  animation: heroIn 1.2s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes heroIn{
+  from{ opacity:0; transform: translateY(18px) scale(0.99); }
+  to{ opacity:1; transform: translateY(0) scale(1); }
+}
+
+.hero-eyebrow{
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 18px 0;
+}
+
+.hero-name{
+  margin: 0;
+  font-family: var(--display);
+  line-height: 0.92;
+  font-weight: 400;
+}
+.hero-name-line{
+  display: block;
+  font-size: clamp(64px, 14vw, 160px);
+  letter-spacing: 0.02em;
+  color: var(--ink);
+}
+.hero-name-line--accent{
+  color: var(--accent);
+}
+
+.hero-role{
+  margin: 22px 0 0 0;
+  font-family: var(--body);
+  font-size: clamp(14px, 1.6vw, 18px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.scroll-cue{
+  position: absolute;
+  bottom: 44px; left: 50%;
+  transform: translateX(-50%);
+  background: none; border: none; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 10px;
+  color: var(--ink-dim);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  z-index: 2;
+}
+.scroll-cue-line{
+  width: 1px; height: 30px;
+  background: linear-gradient(180deg, var(--accent), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse{
+  0%,100%{ opacity: 0.3; }
+  50%{ opacity: 1; }
+}
+
+/* =========================================================
+   BIO — PASS 02
+========================================================= */
+.pass--bio{
+  background: var(--bg);
+  align-items: flex-start;
+}
+.bio-inner{
+  max-width: 640px;
+  margin: 0 auto;
+  padding-top: 60px;
+}
+.bio-text{
+  font-size: clamp(16px, 1.6vw, 19px);
+  line-height: 1.75;
+  color: var(--ink-dim);
+  margin: 0 0 20px 0;
+}
+.bio-text:last-child{ margin-bottom: 0; }
+
+/* =========================================================
+   REEL — PASS 03
+========================================================= */
+.pass--reel{
+  background: var(--panel);
+  align-items: center;
+}
+.reel-inner{
+  width: 100%;
+  max-width: 980px;
+  margin: 0 auto;
+  padding-top: 60px;
+}
+.reel-inner .section-title{ text-align: center; }
+
+.reel-frame{
+  position: relative;
+  padding: 14px;
+  border: 1px solid var(--line);
+}
+.reel-frame-corner{
+  position: absolute;
+  width: 14px; height: 14px;
+  border: 1px solid var(--accent);
+}
+.rc-tl{ top: -1px; left: -1px; border-right:none; border-bottom:none; }
+.rc-tr{ top: -1px; right: -1px; border-left:none; border-bottom:none; }
+.rc-bl{ bottom: -1px; left: -1px; border-right:none; border-top:none; }
+.rc-br{ bottom: -1px; right: -1px; border-left:none; border-top:none; }
+
+.reel-video-wrap{
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 */
+  background: #000;
+}
+.reel-video-wrap iframe{
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  border: 0;
+}
+
+.reel-channel-link{
+  display: inline-block;
+  margin-top: 26px;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 2px;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+.reel-channel-link:hover{
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.reel-inner{ text-align: center; }
+
+/* =========================================================
+   CONTACT — PASS 04
+========================================================= */
+.pass--contact{
+  background: var(--bg);
+  align-items: flex-start;
+  padding-bottom: clamp(40px, 8vw, 80px);
+}
+.contact-inner{
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding-top: 60px;
+}
+.contact-sub{
+  color: var(--ink-dim);
+  font-size: 16px;
+  margin: -8px 0 36px 0;
+}
+
+.contact-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.contact-card{
+  background: var(--bg);
+  padding: 28px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-decoration: none;
+  transition: background 0.25s ease;
+}
+.contact-card:hover{
+  background: var(--panel);
+}
+.contact-card-label{
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent-dim);
+}
+.contact-card:hover .contact-card-label{ color: var(--accent); }
+.contact-card-value{
+  font-size: 16px;
+  color: var(--ink);
+  word-break: break-word;
+}
+
+.footer{
+  margin-top: 72px;
+  padding-top: 26px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--ink-dim);
+}
+.footer-tag{ opacity: 0.6; }
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+@media (max-width: 560px){
+  .hud-tag{ font-size: 9px; }
+  .pass-label{ top: 18px; left: 18px; }
+  :root{ --pad: 20px; }
+  .footer{ flex-direction: column; }
+}
