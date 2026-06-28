@@ -4,138 +4,70 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Adrian Krokå — VFX Artist</title>
-<meta name="description" content="Adrian Krokå, Aspiring VFX Artist. Reel, contact, and bio.">
+<meta name="description" content="Adrian Krokå — aspiring VFX artist specializing in compositing. Showreel and contact.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="grain"></div>
-<div class="vignette"></div>
-
-<!-- progress rail -->
-<div class="rail" aria-hidden="true">
-  <div class="rail-fill" id="railFill"></div>
-</div>
-
-<!-- ============ HERO / PASS 01 — BG PLATE ============ -->
-<section class="pass pass--hero" id="hero" data-pass="bg_plate">
-
-  <div class="hud" aria-hidden="true">
-    <span class="hud-tag hud-tl">REC.709 · 23.976fps</span>
-    <span class="hud-tag hud-tr">COMP_FINAL_v07</span>
-    <span class="hud-tag hud-bl">LAYER 01 / BG_PLATE</span>
-    <span class="hud-tag hud-br">EXP+0.0 · GAMMA 2.2</span>
+<!-- ============ FIXED TOP BAR ============ -->
+<header class="topbar" id="topbar">
+  <div class="topbar-inner">
+    <span class="brand-name">ADRIAN KROKÅ</span>
+    <span class="brand-role">Aspiring VFX Artist</span>
   </div>
+</header>
 
-  <div class="crosshair ch-tl" aria-hidden="true"></div>
-  <div class="crosshair ch-tr" aria-hidden="true"></div>
-  <div class="crosshair ch-bl" aria-hidden="true"></div>
-  <div class="crosshair ch-br" aria-hidden="true"></div>
+<main class="page">
 
-  <div class="hero-inner">
-    <p class="hero-eyebrow">Showreel — Compositing &amp; VFX</p>
-    <h1 class="hero-name">
-      <span class="hero-name-line">ADRIAN</span>
-      <span class="hero-name-line hero-name-line--accent">KROKÅ</span>
-    </h1>
-    <p class="hero-role">Aspiring VFX Artist</p>
-  </div>
-
-  <button class="scroll-cue" id="scrollCue" aria-label="Scroll to bio">
-    <span>SCROLL</span>
-    <span class="scroll-cue-line"></span>
-  </button>
-</section>
-
-<!-- ============ BIO / PASS 02 — KEY LIGHT ============ -->
-<section class="pass pass--bio" id="bio" data-pass="key_light">
-  <div class="pass-label">
-    <span class="pass-label-num">02</span>
-    <span class="pass-label-text">KEY_LIGHT</span>
-  </div>
-
-  <div class="bio-inner reveal">
+  <!-- ============ ABOUT ============ -->
+  <section class="section section--about reveal">
     <h2 class="section-title">About</h2>
-    <p class="bio-text">
-      I'm Adrian Krokå, an aspiring VFX artist focused on building a strong foundation in
-      compositing, tracking, and integrating CG elements into live footage. I care about
-      getting the small details right &mdash; light wrap, grain matching, contact shadows &mdash;
-      the things that make an effect disappear into the shot instead of sitting on top of it.
+    <p class="body-text">
+      I'm an aspiring VFX artist specializing in compositing.
     </p>
-    <p class="bio-text">
-      Currently building out my reel and looking for opportunities to learn from working
-      studios and grow into a full-time compositing role.
+    <p class="body-text">
+      I've been fascinated by filmmaking from an early age, that has led me to
+      pursue visual effects. I'm currently studying VFX at Kristiania University College in
+      Oslo, Norway - building on several years of self-taught experience in Blender and Nuke.
     </p>
-  </div>
-</section>
+  </section>
 
-<!-- ============ REEL / PASS 03 — COMP ============ -->
-<section class="pass pass--reel" id="reel" data-pass="comp">
-  <div class="pass-label">
-    <span class="pass-label-num">03</span>
-    <span class="pass-label-text">COMP</span>
-  </div>
-
-  <div class="reel-inner reveal">
+  <!-- ============ SHOWREEL ============ -->
+  <section class="section section--reel reveal">
     <h2 class="section-title">Showreel</h2>
-    <div class="reel-frame">
-      <div class="reel-frame-corner rc-tl"></div>
-      <div class="reel-frame-corner rc-tr"></div>
-      <div class="reel-frame-corner rc-bl"></div>
-      <div class="reel-frame-corner rc-br"></div>
-      <div class="reel-video-wrap">
-        <iframe
-          id="reelFrame"
-          src="https://www.youtube.com/embed/269AqGknwv0?rel=0&modestbranding=1"
-          title="Adrian Krokå VFX Reel"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          loading="lazy">
-        </iframe>
-      </div>
+    <div class="reel-video">
+      <iframe
+        src="https://www.youtube.com/embed/269AqGknwv0?rel=0&modestbranding=1"
+        title="Adrian Krokå VFX Reel"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        loading="lazy">
+      </iframe>
     </div>
-    <a class="reel-channel-link" href="https://www.youtube.com/channel/UCQtGJx6lkC3n_W4DawD8rhA" target="_blank" rel="noopener">
-      More on YouTube — Lego Crow ↗
+    <a class="reel-more" href="https://www.youtube.com/channel/UCQtGJx6lkC3n_W4DawD8rhA" target="_blank" rel="noopener">
+      More on YouTube ↗
     </a>
-  </div>
-</section>
+  </section>
 
-<!-- ============ CONTACT / PASS 04 — OUTPUT ============ -->
-<section class="pass pass--contact" id="contact" data-pass="output">
-  <div class="pass-label">
-    <span class="pass-label-num">04</span>
-    <span class="pass-label-text">OUTPUT</span>
-  </div>
+  <!-- ============ CONTACT ============ -->
+  <section class="section section--contact reveal">
+    <h2 class="section-title section-title--center">Contact</h2>
+    <p class="contact-line">
+      <a href="mailto:adriankrokaa2001@gmail.com">adriankrokaa2001@gmail.com</a>
+      <span class="contact-sep">·</span>
+      <a href="tel:+4747263061">+47 472 63 061</a>
+    </p>
+  </section>
 
-  <div class="contact-inner reveal">
-    <h2 class="section-title">Get in touch</h2>
-    <p class="contact-sub">Open to opportunities, collaborations, and feedback.</p>
+  <footer class="footer">
+    © 2026 Adrian Krokå
+  </footer>
 
-    <div class="contact-grid">
-      <a class="contact-card" href="mailto:adriankrokaa2001@gmail.com">
-        <span class="contact-card-label">Email</span>
-        <span class="contact-card-value">adriankrokaa2001@gmail.com</span>
-      </a>
-      <a class="contact-card" href="tel:+4747263061">
-        <span class="contact-card-label">Phone</span>
-        <span class="contact-card-value">+47 472 63 061</span>
-      </a>
-      <a class="contact-card" href="https://www.youtube.com/channel/UCQtGJx6lkC3n_W4DawD8rhA" target="_blank" rel="noopener">
-        <span class="contact-card-label">YouTube</span>
-        <span class="contact-card-value">Lego Crow ↗</span>
-      </a>
-    </div>
-
-    <footer class="footer">
-      <span>© 2026 Adrian Krokå</span>
-      <span class="footer-tag">RENDERED IN BROWSER · NO PLUGINS</span>
-    </footer>
-  </div>
-</section>
+</main>
 
 <script src="script.js"></script>
 </body>

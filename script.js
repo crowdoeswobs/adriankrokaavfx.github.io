@@ -1,6 +1,8 @@
+// Mark JS as available so reveal styles apply (content stays visible if JS fails)
+document.documentElement.classList.add('js');
+
 // Scroll-triggered reveal
 const reveals = document.querySelectorAll('.reveal');
-
 const io = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting){
@@ -8,25 +10,13 @@ const io = new IntersectionObserver((entries) => {
       io.unobserve(entry.target);
     }
   });
-}, { threshold: 0.15 });
-
+}, { threshold: 0.12 });
 reveals.forEach(el => io.observe(el));
 
-// Progress rail fill
-const railFill = document.getElementById('railFill');
-function updateRail(){
-  const scrollTop = window.scrollY;
-  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-  const pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-  if (railFill) railFill.style.height = pct + '%';
+// Subtle shadow on the top bar once the page is scrolled
+const topbar = document.getElementById('topbar');
+function updateTopbar(){
+  if (topbar) topbar.classList.toggle('is-scrolled', window.scrollY > 4);
 }
-window.addEventListener('scroll', updateRail, { passive: true });
-updateRail();
-
-// Scroll cue click
-const scrollCue = document.getElementById('scrollCue');
-if (scrollCue){
-  scrollCue.addEventListener('click', () => {
-    document.getElementById('bio').scrollIntoView({ behavior: 'smooth' });
-  });
-}
+window.addEventListener('scroll', updateTopbar, { passive: true });
+updateTopbar();
